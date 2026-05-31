@@ -13,3 +13,8 @@
 # Logs / temp
 *.log
 tmp/
+
+# Build artifacts (make build で生成)
+# 配布用や保存用の .scpt を将来コミットする可能性があるため、
+# *.scpt 全体ではなく dist/ のみを ignore する。
+dist/
