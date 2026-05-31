@@ -1,12 +1,23 @@
 // ==========================================
-// 座標インスペクター
+// coordinate_inspector
 // JXA (JavaScript for Automation)
 //
-// 目的:
-//   マウスをクリックしたい位置へ動かしてから、
-//   その位置の座標を取得・表示する。
-//   表示した座標は auto_clicker_v12 (boost_tap.js) の
-//   MAIN COORD としてそのまま転記できる。
+// 位置づけ:
+//   マウス自動化ツール群 (training_boost_tap.js,
+//   help_tap.js 等) で利用する座標を取得するための
+//   補助ツール。
+//   単体で完結する成果物ではなく、他ツールへ転記
+//   する座標値を取得・確認する目的で使う、
+//   マウス操作ツール群の共通ユーティリティ。
+//
+// 典型的な使い方:
+//   1. 本スクリプトを Script Editor で実行
+//   2. 表示までの待機 (WAIT_SEC 秒) の間に
+//      マウスを「クリックさせたい位置」へ移動
+//   3. ダイアログ・通知に表示された NSEvent 座標
+//      (X, Y) を控える
+//   4. その値を training_boost_tap.js などの
+//      MAIN COORD として転記する
 //
 // 実行方法:
 //   Script Editor → 言語「JavaScript」→ ⌘R
@@ -103,7 +114,7 @@ function notify(title, body) {
 //
 // ┌ なぜ NSEvent 座標で保持するのか ────────┐
 // │                                        │
-// │  auto_clicker_v12 は、取得したマウス     │
+// │  training_boost_tap は、取得したマウス   │
 // │  座標を NSEvent 座標のまま変数に保持し、 │
 // │  クリック直前 (clickAt 内) に CG 座標へ  │
 // │  変換している。                         │
@@ -122,7 +133,7 @@ function notify(title, body) {
 // │  本インスペクタも同じ方針に揃え、       │
 // │  表示する座標も NSEvent 座標を主とする。 │
 // │  これにより、表示された値を              │
-// │  そのまま auto_clicker_v12 側にコピペ    │
+// │  そのまま training_boost_tap 側にコピペ  │
 // │  できる。                                │
 // │                                        │
 // └────────────────────────────────────────┘
@@ -162,7 +173,7 @@ function notify(title, body) {
 // 特定方法:
 //   NSScreen.screens の中で frame.origin が
 //   (0, 0) のものを探す。
-//   auto_clicker_v12 と同じロジック。
+//   training_boost_tap と同じロジック。
 //
 // NSScreen.mainScreen を使わない理由:
 //   "キーウィンドウのあるスクリーン" を返す
@@ -309,7 +320,7 @@ var nsY = Math.round(rawY)
 
 // CG 座標 (左上原点) を参考表示用に算出
 //   X は同じ、Y は反転 (cgY = primaryH - nsY)
-//   auto_clicker_v12 の clickAt() と同じ式を使う。
+//   training_boost_tap の clickAt() と同じ式を使う。
 //   PRIMARY_H が小数になるケースに備え表示用に Math.round。
 var cgX = nsX
 var cgY = Math.round(PRIMARY_H - nsY)
@@ -367,7 +378,7 @@ app.displayDialog(
     refCG + "\n\n" +
     screenInfo + "\n\n" +
     "※ NSEvent 座標 (左下原点) で表示しています。\n" +
-    "auto_clicker_v12 の MAIN COORD として\n" +
+    "training_boost_tap の MAIN COORD として\n" +
     "そのまま転記できます。",
     {
         withTitle: "マウス座標 (NSEvent)",

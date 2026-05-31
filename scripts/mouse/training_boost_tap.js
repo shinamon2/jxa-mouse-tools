@@ -1,6 +1,14 @@
 // ==========================================
-// オートクリッカー v12
-// JXA (JavaScript for Automation)
+// training_boost_tap (v12)
+// JXA (JavaScript for Automation) 学習用
+// マウスクリック自動化サンプル
+//
+// 概要:
+//   指定した位置を連続タップする JXA スクリプト。
+//   AppKit による座標取得・座標系変換と、
+//   CoreGraphics によるイベント送信、
+//   ダイアログ入力、failsafe を一通り含む
+//   学習サンプルとして整備。
 //
 // 実行方法:
 //   Script Editor → 言語「JavaScript」→ ⌘R
@@ -25,7 +33,7 @@ app.includeStandardAdditions = true
 // ==========================================
 
 var DEBUG_MODE = true
-var LOG_PATH = "~/Desktop/auto_click_debug.log"
+var LOG_PATH = "~/Desktop/training_boost_tap.log"
 var MIN_DELAY = 0.11
 var MAX_DELAY = 0.24
 var CLICK_HOLD = 0.008
@@ -279,7 +287,7 @@ function waitBetweenClicks() {
 // Start
 // ==========================================
 
-log("===== START v12 =====")
+log("===== TRAINING_BOOST_TAP START v12 =====")
 log("FAILSAFE=" + FAILSAFE_ENABLED + " corner=" + FAILSAFE_CORNER + "pt")
 log("AUTO_SUB_OFFSET X=" + AUTO_SUB_OFFSET_X + " Y=" + AUTO_SUB_OFFSET_Y)
 
@@ -303,7 +311,7 @@ try {
         "DEBUG MODE = " + DEBUG_MODE,
         {
             defaultAnswer: "5",
-            withTitle: "Auto Click v12",
+            withTitle: "Training Boost Tap v12",
             buttons: ["キャンセル", "次へ"],
             defaultButton: "次へ"
         }
@@ -336,7 +344,7 @@ try {
         "  ΔX = +" + AUTO_SUB_OFFSET_X + "\n" +
         "  ΔY = +" + AUTO_SUB_OFFSET_Y,
         {
-            withTitle: "Auto Click v12 — 補助ブースト",
+            withTitle: "Training Boost Tap v12 — 補助ブースト",
             buttons: ["使用しない", "使用する"],
             defaultButton: "使用しない"
         }
@@ -365,7 +373,7 @@ log("mode=" + mode)
 // 待機 → マウス座標取得
 // ==========================================
 
-notify("Auto Click", START_DELAY + "秒以内にクリック位置へ移動してください")
+notify("Training Boost Tap", START_DELAY + "秒以内にクリック位置へ移動してください")
 log("wait " + START_DELAY + " sec")
 delay(START_DELAY)
 
@@ -473,4 +481,4 @@ try {
     app.beep()
 }
 
-notify("Auto Click", "完了しました")
+notify("Training Boost Tap", "完了しました")
