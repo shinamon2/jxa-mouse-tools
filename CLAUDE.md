@@ -1,6 +1,8 @@
 # CLAUDE.md
 
-このリポジトリで Claude Code（および他の AI アシスタント）が作業する際に従うべき方針をまとめています。
+本リポジトリは macOS で使う JXA（JavaScript for Automation）スクリプト集です。Claude Code で継続的に育てており、GitHub で履歴管理しています。
+
+本ファイルは Claude Code（および他の AI アシスタント）が作業する際に従うべき方針をまとめています。
 
 ## 言語に関する方針
 
@@ -35,24 +37,35 @@ function getMousePosition() {
 
 ## ファイル形式の方針
 
-JXA スクリプトは **`.js`（プレーンテキスト）** で管理します。Script Editor のバイナリ形式 `.scpt` は使いません。
+- **編集元は `.js`**。すべての編集は `.js`（`scripts/mouse/` 配下）に対して行う。
+- **`.scpt` は make build でローカル生成**する。出力先は `dist/scpt/`。
+- **`dist/` は `.gitignore` で除外**しコミットしない。
+- ただし `.scpt` 全体を ignore はしない。将来、配布用・保存用などの目的で `dist/` 外のパスに `.scpt` をコミットするケースに備える。
 
-理由:
-- `git diff` / コードレビュー / GitHub 上での閲覧がすべて機能する
-- 任意のエディタ（VS Code 等）でも編集できる
-- ポートフォリオとして GitHub 上にコードが直接見える状態を維持できる
+`.scpt` で受け取った既存スクリプトを `.js` 化する必要がある場合は、Script Editor で開いて「フォーマット → スクリプトをテキストとして書き出す」または手動で `.js` にコピーしてから追加する。
 
-`.scpt` で受け取った既存スクリプトを追加する場合は、Script Editor で開いて「フォーマット → スクリプトをテキストとして書き出す」または手動で `.js` にコピーしてから追加してください。
+## ビルド・実行ワークフロー
 
-## 実行・検証の方針
+ユーザのフロー:
 
-- **実行**: Script Editor（言語: JavaScript）で開いて `⌘R`、または `osascript -l JavaScript path/to/script.js`
-- **構文チェック**: Node.js は使わない（`ObjC.import` 等の JXA 固有 API を解釈できないため）。
-  代わりに以下を使う:
+1. `make build` を実行
+2. `scripts/mouse/*.js` がコンパイルされ `dist/scpt/*.scpt` が生成される
+3. Finder で `dist/scpt/` が自動で開く
+4. `.scpt` をダブルクリック → Script Editor → `⌘R`
+
+または `make run TOOL=<name>` で個別の `.scpt` を Script Editor で直接開く。
+詳細な Makefile ターゲットは README.md の「ビルド」セクション参照。
+
+## AI アシスタント（Claude）の編集ワークフロー
+
+- **編集対象は常に `.js`**（`scripts/mouse/` 配下）。`.scpt` を直接編集しない。
+- **`.scpt` の生成はユーザに任せる**（ユーザがローカルで `make build` を実行する）。
+  Claude が `osacompile` を直接叩いて `.scpt` を作る必要は基本ない。
+- **構文チェック**が必要なときは、実行はせず `osacompile` だけ通す:
   ```sh
-  osacompile -l JavaScript -o /tmp/check.scpt path/to/script.js
+  osacompile -l JavaScript -o /tmp/check.scpt scripts/mouse/path/to/file.js
   ```
-  実行はせずビルドだけ通す形で構文の妥当性を確認できる。
+  これによりエラーがあれば検出できる。
 
 ## 座標系の方針
 
